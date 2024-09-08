@@ -32,7 +32,7 @@ class UserManager(BaseUserManager):
             email=email,
             username=username,
             name=name,
-            mobile_no=mobile_no
+            mobile_no=mobile_no,
             **extra_fields
         )
         user.set_password(password)
