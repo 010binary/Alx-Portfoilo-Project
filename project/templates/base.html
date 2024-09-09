@@ -19,35 +19,70 @@
             <a class="text-xl font-bold flex items-center" href="#">
                 <i class="fas fa-bold fa-lg"></i> <!-- Icon as a logo -->
             </a>
-
+    
             <!-- Toggler button for mobile view -->
-            <button class="lg:hidden text-white focus:outline-none" aria-controls="navbarNav" aria-expanded="false">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
-                    </path>
+            <button class="lg:hidden text-white focus:outline-none" id="togglerButton">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
-
-            <!-- Collapsible content -->
-            <div class="hidden lg:flex lg:items-center lg:space-x-4" id="navbarNav">
+    
+            <!-- Desktop menu -->
+            <div class="hidden lg:flex lg:items-center lg:space-x-4" id="desktopMenu">
                 <a class="text-white hover:text-gray-300" href="#">Home</a>
                 <a class="text-white hover:text-gray-300" href="#">About</a>
                 <a class="text-white hover:text-gray-300" href="#">Contact</a>
                 <a class="text-white hover:text-gray-300" href="#">Login</a>
                 <a class="hidden text-white hover:text-gray-300" href="#">Vote</a>
             </div>
+    
+            <!-- Mobile navbar (not dropdown) -->
+            <div class="lg:hidden hidden bg-blue-500 w-full absolute top-12 left-0" id="mobileMenu">
+                <div class="flex flex-col items-start p-3 space-y-2">
+                    <a href="#" class="block px-4 py-2 text-white hover:bg-blue-700">Home</a>
+                    <a href="#" class="block px-4 py-2 text-white hover:bg-blue-700">About</a>
+                    <a href="#" class="block px-4 py-2 text-white hover:bg-blue-700">Contact</a>
+                    <a href="#" class="block px-4 py-2 text-white hover:bg-blue-700">Login</a>
+                    <a href="#" class="block px-4 py-2 text-white hover:bg-blue-700">Vote</a>
+                </div>
+            </div>
         </div>
     </nav>
-
-
-
+    
     {% block body %}{% endblock %}
-
-
+    
     <footer class="bg-blue-500 text-white text-center p-3">
         <p>&copy; 2024 Alx Project</p>
     </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const togglerButton = document.getElementById('togglerButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const navBar = document.querySelector('nav');
+    
+            // Toggle mobile menu and change background to red when open
+            togglerButton.addEventListener('click', function () {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    navBar.classList.add('bg-red-500'); // Change navbar background to red
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    navBar.classList.remove('bg-red-500'); // Revert to blue when closed
+                }
+            });
+    
+            // Close mobile menu when clicking outside (optional)
+            document.addEventListener('click', function (event) {
+                if (!togglerButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                    navBar.classList.remove('bg-red-500'); // Revert to blue when closed
+                }
+            });
+        });
+    </script>
+    
+
 
 
 </body>
