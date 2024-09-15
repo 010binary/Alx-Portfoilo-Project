@@ -1,10 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}
-My Portfolio
-{% endblock %}
-
 {% block body %}
-<h1>Welcome to my portfolio!</h1>
-<p>This is the body content of my index page.</p>
+<div class="bg-black min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-5xl w-full flex flex-col md:flex-row items-center justify-between">
+        <div class="w-full md:w-1/2 flex items-center justify-center mb-8 md:mb-0">
+            {% load static %}
+            <img src="{% static 'images/LandingPageImg.webp' %}" alt="Let's Vote Neon Sign"
+                class="w-full max-w-md h-auto">
+        </div>
+        <div class="w-full md:w-1/2 text-white text-center md:text-left">
+            <h2 class="text-2xl font-bold mb-2">Be a part of decision</h2>
+            <h1 class="text-5xl font-bold text-blue-500 mb-6">Vote Today</h1>
+            <div class="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row justify-center md:justify-start">
+                <a href="#"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out inline-block">
+                    REGISTER
+                </a>
+                <a href="#"
+                    class="bg-transparent border border-blue-600 hover:bg-blue-600 text-blue-500 hover:text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out inline-block">
+                    READ MORE
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
