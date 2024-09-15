@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/LandingPageImg.webp' %}" type="image/x-icon">
     <title>Vote system {% block title %}{% endblock %}</title>
 </head>
 
@@ -17,7 +18,7 @@
         <nav class="bg-gray-900  p-6 text-white">
             <div class="container mx-auto flex items-center px-4 justify-between">
                 <!-- Logo on the left -->
-                <a class="text-xl font-bold flex items-center" href="#">
+                <a class="text-xl font-bold flex items-center" href="{% url 'index' %}">
                     <i class="fas fa-bold fa-lg"></i>
                 </a>
 
@@ -33,10 +34,10 @@
 
                 <!-- Desktop menu -->
                 <div class="hidden lg:flex lg:items-center text-xl lg:space-x-6" id="desktopMenu">
-                    <a class="text-white hover:text-gray-300" href="#">Home</a>
-                    <a class="text-white hover:text-gray-300" href="#">About</a>
-                    <a class="text-white hover:text-gray-300" href="#">Contact</a>
-                    <a class="text-white hover:text-gray-300" href="#">Login</a>
+                    <a class="text-white hover:text-gray-300" href="{% url 'index' %}">Home</a>
+                    <a class="text-white hover:text-gray-300" href="{% url 'about' %}">About</a>
+                    <a class="text-white hover:text-gray-300" href="{% url 'register' %}">Register</a>
+                    <a class="text-white hover:text-gray-300" href="{% url 'login' %}">Login</a>
                     <a class="hidden text-white hover:text-gray-300" href="#">Vote</a>
                 </div>
 
@@ -87,9 +88,6 @@
             });
         });
     </script>
-
-
-
 
 </body>
 
