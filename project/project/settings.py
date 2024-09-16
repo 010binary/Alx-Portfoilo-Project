@@ -81,6 +81,9 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'main.User'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -133,6 +136,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Directory where static files will be collected when you run `collectstatic`
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Run TailwindCSS watcher
-if DEBUG:
-    run_tailwind_watch()
+# # Run TailwindCSS watcher
+# if DEBUG:
+#     run_tailwind_watch()

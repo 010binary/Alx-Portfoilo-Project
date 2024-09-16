@@ -1,6 +1,9 @@
+from django.db import IntegrityError
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login, logout
 from .forms import RegisterForm, LoginForm
 from django.http import JsonResponse
+from .models import User
 # Create your views here.
 
 
@@ -14,15 +17,27 @@ def about(request):
 
 def register(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            print("Form is valid")
-            print(form.cleaned_data)
-            return redirect('index')
-        else:
-            print("Form is not valid")
-            print(form.errors)
-            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+        try:
+            form = RegisterForm(request.POST)
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+
+                user = User.objects.create_user(
+                    email=cleaned_data['email'],
+                    username=cleaned_data['username'],
+                    name=cleaned_data['name'],
+                    mobile_no=cleaned_data['mobile'],
+                    password=cleaned_data['password']
+                )
+                print("user created", user)
+
+                return JsonResponse({'status': 'success', 'message': 'User registered successfully'})
+            else:
+                return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+        except IntegrityError as e:
+            return JsonResponse({'status': 'error', 'message': 'Username or email or mobile already exists'}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     else:
         form = RegisterForm()
 
@@ -36,12 +51,18 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            print("Form is valid")
-            print(form.cleaned_data)
-            return redirect('index')
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            user = authenticate(email=email, password=password)
+
+            if user is not None:
+                auth_login(request, user)
+                print("User logged in", user)
+                return redirect('index')
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Invalid email or password'}, status=400)
         else:
-            print("Form is not valid")
-            print(form.errors)
             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
     else:
         form = LoginForm()
@@ -50,3 +71,7 @@ def login(request):
         'form': form
     }
     return render(request, 'login.html', context=context)
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

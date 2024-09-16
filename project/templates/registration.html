@@ -54,6 +54,24 @@
             return;
         }
 
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters long!");
+            document.getElementById('loader').classList.add('hidden'); // Hide the loader
+            return;
+        }
+
+        if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*]/.test(password)) {
+            alert("Password must contain at least one uppercase letter, one lowercase letter, one special character and one number!");
+            document.getElementById('loader').classList.add('hidden'); // Hide the loader
+            return;
+        }
+
+        if (isNaN(document.querySelector('input[name="mobile"]').value)) {
+            alert("Mobile number must be a number!");
+            document.getElementById('loader').classList.add('hidden'); // Hide the loader
+            return;
+        }
+
         const formData = new FormData(this);
         fetch(this.action, {
             method: 'POST',
