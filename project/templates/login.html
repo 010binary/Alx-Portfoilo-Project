@@ -13,31 +13,13 @@
                     <h2 class="text-3xl font-bold text-white">Login form</h2>
                 </div>
             </div>
-            <form id="loginForm" class="space-y-4">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
-                    <input type="email" id="email" name="email"
-                        class="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required>
-                </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
-                    <input type="password" id="password" name="password"
-                        class="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required>
-                </div>
-                <div
-                    class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
-                    <a href="#" class="text-sm text-blue-500 hover:text-blue-400">Forgot Password?</a>
-                    <div class="text-sm">
-                        <span class="text-gray-300">Not a user?</span>
-                        <a href="#" class="text-blue-500 hover:text-blue-400 ml-1">Register now</a>
-                    </div>
-                </div>
+            <form id="loginForm" method="post" class="space-y-2 text-white">
+                {% csrf_token %}
+                {{ form.as_p }}
                 <div>
                     <button type="submit"
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
-                        SUBMIT
+                        Login
                     </button>
                 </div>
             </form>
@@ -47,8 +29,28 @@
 <script>
     document.getElementById('loginForm').addEventListener('submit', function (e) {
         e.preventDefault();
-        console.log("Login form submitted");
-        alert("Login attempt registered!");
+        const formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        }).then(response => {
+            if (response.headers.get('content-type')?.includes('application/json')) {
+                return response.json();
+            } else {
+                return response.text();
+            }
+        }).then(data => {
+            if (typeof data === 'string') {
+                console.log("Received non-JSON response:", data);
+            } else {
+                console.log("Received JSON response:", data);
+            }
+            alert("Login attempt registered!");
+            document.getElementById('loginForm').reset();
+        }).catch(error => console.error('Error:', error));
     });
 </script>
 {% endblock %}

@@ -1,5 +1,6 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+from .forms import RegisterForm, LoginForm
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -8,11 +9,43 @@ def index(request):
 
 
 def register(request):
-    return render(request, 'registration.html')
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            print("Form is valid")
+            print(form.cleaned_data)
+            return JsonResponse({'status': 'success', 'message': 'Login successful'})
+        else:
+            print("Form is not valid")
+            print(form.errors)
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    else:
+        form = RegisterForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'registration.html', context=context)
 
 
 def login(request):
-    return render(request, 'login.html')
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            print("Form is valid")
+            print(form.cleaned_data)
+            return JsonResponse({'status': 'success', 'message': 'Login successful'})
+        else:
+            print("Form is not valid")
+            print(form.errors)
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    else:
+        form = LoginForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'login.html', context=context)
 
 
 def about(request):
