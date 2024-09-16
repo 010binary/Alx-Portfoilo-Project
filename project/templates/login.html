@@ -48,18 +48,19 @@
             headers: {
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             }
-        }).then(response => {
-            if (!response.ok) {
-                return response.json();
-            } else {
-                return null;
-            }
-        }).then(data => {
-            if (data) {
-                alert("Login failed! " + (data.errors ? JSON.stringify(data.errors) : data.message));
-            }
-            document.getElementById('loginForm').reset();
-        }).catch(error => console.error('Error:', error))
+        }).then(response => response.json())
+            .then(data => {
+                if (data.status === 'error') {
+                    alert("Login failed! " + (data.errors ? JSON.stringify(data.errors) : data.message));
+                }
+
+                if (data.status === 'success') {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                }
+                document.getElementById('loginForm').reset();
+            }).catch(error => console.error('Error:', error))
             .finally(() => {
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('loader').classList.remove('flex');

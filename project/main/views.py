@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.urls import reverse
 from .forms import RegisterForm, LoginForm
 from django.http import JsonResponse
 from .models import User
@@ -21,7 +22,6 @@ def register(request):
             form = RegisterForm(request.POST)
             if form.is_valid():
                 cleaned_data = form.cleaned_data
-
                 user = User.objects.create_user(
                     email=cleaned_data['email'],
                     username=cleaned_data['username'],
@@ -30,8 +30,7 @@ def register(request):
                     password=cleaned_data['password']
                 )
                 print("user created", user)
-
-                return JsonResponse({'status': 'success', 'message': 'User registered successfully'})
+                return JsonResponse({'status': 'success', 'message': 'Registration successful', 'redirect': reverse('index')})
             else:
                 return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
         except IntegrityError as e:
@@ -40,11 +39,7 @@ def register(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     else:
         form = RegisterForm()
-
-    context = {
-        'form': form
-    }
-    return render(request, 'registration.html', context=context)
+    return render(request, 'registration.html', {'form': form})
 
 
 def login(request):
@@ -53,25 +48,20 @@ def login(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-
             user = authenticate(email=email, password=password)
-
             if user is not None:
                 auth_login(request, user)
                 print("User logged in", user)
-                return redirect('index')
+                return JsonResponse({'status': 'success', 'message': 'Login successful', 'redirect': reverse('index')})
             else:
                 return JsonResponse({'status': 'error', 'message': 'Invalid email or password'}, status=400)
         else:
             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
     else:
         form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
-    context = {
-        'form': form
-    }
-    return render(request, 'login.html', context=context)
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return JsonResponse({'status': 'success', 'message': 'Logout successful', 'redirect': reverse('login')})
