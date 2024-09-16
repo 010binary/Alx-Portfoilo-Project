@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Login Form{% endblock %}
 {% block body %}
-<div class="bg-gray-900 flex flex-row items-center justify-center min-h-screen p-4">
+<div class="bg-gray-900 flex flex-row items-center justify-center min-h-screen md:min-h-[80vh] p-4">
     <div class="w-full max-w-5xl flex flex-col-reverse md:flex-row items-center justify-between">
         <div class="w-full md:w-1/2 flex items-center justify-center mb-8 md:mb-0">
             {% load static %}
@@ -26,9 +26,21 @@
         </div>
     </div>
 </div>
+
+<!-- Include Loader HTML -->
+<div id="loader" class="hidden fixed inset-0 bg-black/70 z-50 items-center justify-center ">
+    {% include 'loader.html' %}
+</div>
+
 <script>
     document.getElementById('loginForm').addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // Show the loader
+        document.getElementById('loader').classList.remove('hidden');
+        document.getElementById('loader').classList.add('flex');
+        document.getElementById('loader').classList.add('cursor-wait');
+
         const formData = new FormData(this);
         fetch(this.action, {
             method: 'POST',
@@ -37,20 +49,23 @@
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             }
         }).then(response => {
-            if (response.headers.get('content-type')?.includes('application/json')) {
+            if (!response.ok) {
                 return response.json();
             } else {
-                return response.text();
+                return null;
             }
         }).then(data => {
-            if (typeof data === 'string') {
-                console.log("Received non-JSON response:", data);
-            } else {
-                console.log("Received JSON response:", data);
+            if (data) {
+                alert("Login failed! " + (data.errors ? JSON.stringify(data.errors) : data.message));
             }
-            alert("Login attempt registered!");
             document.getElementById('loginForm').reset();
-        }).catch(error => console.error('Error:', error));
+        }).catch(error => console.error('Error:', error))
+            .finally(() => {
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('loader').classList.remove('flex');
+                document.getElementById('loader').classList.remove('cursor-wait');
+            });
     });
 </script>
+
 {% endblock %}

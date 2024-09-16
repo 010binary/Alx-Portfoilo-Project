@@ -8,13 +8,17 @@ def index(request):
     return render(request, 'index.html')
 
 
+def about(request):
+    return render(request, 'about.html')
+
+
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             print("Form is valid")
             print(form.cleaned_data)
-            return JsonResponse({'status': 'success', 'message': 'Login successful'})
+            return redirect('index')
         else:
             print("Form is not valid")
             print(form.errors)
@@ -34,7 +38,7 @@ def login(request):
         if form.is_valid():
             print("Form is valid")
             print(form.cleaned_data)
-            return JsonResponse({'status': 'success', 'message': 'Login successful'})
+            return redirect('index')
         else:
             print("Form is not valid")
             print(form.errors)
@@ -46,7 +50,3 @@ def login(request):
         'form': form
     }
     return render(request, 'login.html', context=context)
-
-
-def about(request):
-    return render(request, 'about.html')

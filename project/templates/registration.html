@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Registration Form{% endblock %}
 {% block body %}
-<div class="bg-gray-900 flex flex-col-reverse md:flex-row items-center md:items-center md:justify-around ">
+<div
+    class="bg-gray-900 flex flex-col-reverse overflow-y-hidden h-[83vh] md:flex-row items-center md:items-center md:justify-around ">
     <div class="w-1/3 flex items-center justify-center">
         <div class="bg-gray-900 p-1 mr-4 w-auto h-1/2 flex items-center justify-center">
             {% load static %}
@@ -28,32 +29,30 @@
     </div>
 </div>
 
+<!-- Include Loader HTML -->
+<div id="loader" class="hidden fixed inset-0 bg-black/70 z-50 items-center justify-center ">
+    {% include 'loader.html' %}
+</div>
+
 
 <script>
     document.getElementById('registrationForm').addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // Show the loader
+        document.getElementById('loader').classList.remove('hidden');
+        document.getElementById('loader').classList.add('flex');
+        document.getElementById('loader').classList.add('cursor-wait');
+
+
+
         const password = document.querySelector('input[name="password"]').value;
         const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
         if (password !== confirmPassword) {
             alert("Passwords do not match!");
+            document.getElementById('loader').classList.add('hidden'); // Hide the loader
             return;
         }
-        console.log("Form submitted successfully");
-        alert("Registration successful!");
-    });
-</script>
-<script>
-    document.getElementById('registrationForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        // password validation logic
-        const password = document.querySelector('input[name="password"]').value;
-        const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
-        if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
-
 
         const formData = new FormData(this);
         fetch(this.action, {
@@ -63,20 +62,23 @@
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
             }
         }).then(response => {
-            if (response.headers.get('content-type')?.includes('application/json')) {
+            if (!response.ok) {
                 return response.json();
             } else {
-                return response.text();
+                return null;
             }
         }).then(data => {
-            if (typeof data === 'string') {
-                console.log("Received non-JSON response:", data);
-            } else {
-                console.log("Received JSON response:", data);
+            if (data) {
+                alert("Login failed! " + (data.errors ? JSON.stringify(data.errors) : data.message));
             }
-            alert("Registration attempt registered!");
             document.getElementById('registrationForm').reset();
-        }).catch(error => console.error('Error:', error));
+        }).catch(error => console.error('Error:', error))
+            .finally(() => {
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('loader').classList.remove('flex');
+                document.getElementById('loader').classList.remove('cursor-wait');
+            });
+
     });
 </script>
 {% endblock %}
