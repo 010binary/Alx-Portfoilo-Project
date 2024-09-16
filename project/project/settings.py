@@ -1,6 +1,7 @@
 
 from pathlib import Path
 import environ
+from .watcher import run_tailwind_watch
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 env = environ.Env(
@@ -131,3 +132,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Directory where static files will be collected when you run `collectstatic`
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Run TailwindCSS watcher
+if DEBUG:
+    run_tailwind_watch()
