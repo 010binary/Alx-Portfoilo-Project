@@ -65,3 +65,39 @@ class LoginForm(forms.Form):
             'required': 'required'
         })
     )
+
+class UpdateProfileForm(forms.Form):
+    name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full border border-gray-300 p-2 rounded',
+            'placeholder': 'Name'
+        })
+    )
+    username = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full border border-gray-300 p-2 rounded',
+            'placeholder': 'Username'
+        })
+    )
+    mobile_no = forms.CharField(
+        max_length=15,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full border border-gray-300 p-2 rounded',
+            'placeholder': 'Mobile Number'
+        })
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'w-full border border-gray-300 p-2 rounded',
+            'placeholder': 'Email'
+        })
+    )
+    address = forms.CharField(
+        max_length=255,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full border border-gray-300 p-2 rounded',
+            'placeholder': 'Address'
+        })
+    )

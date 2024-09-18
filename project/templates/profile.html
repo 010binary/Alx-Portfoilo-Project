@@ -43,31 +43,7 @@
         <form id="editProfileForm" method="POST" action="{% url 'update_profile' %}">
             {% csrf_token %}
             <div class="space-y-4">
-                <div>
-                    <label class="block font-semibold">Name</label>
-                    <input type="text" name="name" value="{{ user_data.name }}"
-                        class="w-full border border-gray-300 p-2 rounded">
-                </div>
-                <div>
-                    <label class="block font-semibold">Username</label>
-                    <input type="text" name="username" value="{{ user_data.username }}"
-                        class="w-full border border-gray-300 p-2 rounded">
-                </div>
-                <div>
-                    <label class="block font-semibold">Mobile Number</label>
-                    <input type="text" name="mobile_no" value="{{ user_data.mobile_no }}"
-                        class="w-full border border-gray-300 p-2 rounded">
-                </div>
-                <div>
-                    <label class="block font-semibold">Email</label>
-                    <input type="email" name="email" value="{{ user_data.email }}"
-                        class="w-full border border-gray-300 p-2 rounded">
-                </div>
-                <div>
-                    <label class="block font-semibold">Address</label>
-                    <input type="text" name="address" value="{{ user_data.address }}"
-                        class="w-full border border-gray-300 p-2 rounded">
-                </div>
+                {{ form.as_p }}
             </div>
 
             <div class="flex justify-between mt-4">

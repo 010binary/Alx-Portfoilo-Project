@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, UpdateProfileForm
 from django.http import JsonResponse
 from .models import User
 from django.contrib.auth.decorators import login_required
@@ -69,7 +69,7 @@ def login(request):
 
 def logout_view(request):
     logout(request)
-    return JsonResponse({'status': 'success', 'message': 'Logout successful', 'redirect': reverse('login')})
+    return redirect('index')
 
 
 def vote_rules(request):
@@ -82,19 +82,54 @@ def success_vote(request):
 
 @login_required
 def profile(request):
-    user_data = User.objects.get(id=request.user.id)
-    return render(request, 'profile.html', {'user_data': user_data})
+    user_data = request.user
+
+    form = UpdateProfileForm(initial={
+        'name': user_data.name,
+        'username': user_data.username,
+        'mobile_no': user_data.mobile_no,
+        'email': user_data.email,
+        'address': user_data.address,
+    })
+
+    return render(request, 'profile.html', {'form': form, 'user_data': user_data})
 
 
 @login_required
 def update_profile(request):
     if request.method == 'POST':
-        user = request.user  # Assuming user is logged in
-        user.name = request.POST['name']
-        user.username = request.POST['username']
-        user.mobile_no = request.POST['mobile_no']
-        user.email = request.POST['email']
-        user.address = request.POST['address']
-        user.save()
-        return redirect('profile')
-    return render(request, 'profile.html')
+        form = UpdateProfileForm(request.POST)
+
+        if form.is_valid():
+            # Get the logged-in user
+            user = request.user
+
+            # Update the user's fields from the form's cleaned data
+            user.name = form.cleaned_data['name']
+            user.username = form.cleaned_data['username']
+            user.mobile_no = form.cleaned_data['mobile_no']
+            user.email = form.cleaned_data['email']
+            # This can be None/blank
+            user.address = form.cleaned_data['address']
+
+            # Save the updated user data
+            user.save()
+
+            # Redirect to profile page after successful update
+            return redirect('profile')
+
+    else:
+        # If not a POST request, just render the form
+        form = UpdateProfileForm(initial={
+            'name': request.user.name,
+            'username': request.user.username,
+            'mobile_no': request.user.mobile_no,
+            'email': request.user.email,
+            'address': request.user.address,
+        })
+
+    return render(request, 'profile.html', {'form': form})
+
+
+@login_required
+def get_all_competition():
