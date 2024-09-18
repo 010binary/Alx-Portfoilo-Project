@@ -75,11 +75,12 @@ def logout_view(request):
 def vote_rules(request):
     return render(request, 'vote_rules.html')
 
+
 def success_vote(request):
     return render(request, 'success_vote.html')
 
-# @login_required
+
+@login_required
 def profile(request):
-    # user_data = User.objects.get(id=request.user.id)
-    # print(user_data)
-    return render(request, 'profile.html')
+    user_data = User.objects.get(id=request.user.id)
+    return render(request, 'profile.html', {'user_data': user_data})

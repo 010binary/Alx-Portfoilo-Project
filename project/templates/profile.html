@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Profile Page{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+    <div class="max-w-4xl w-full bg-gray-800 text-white p-8 rounded-lg flex flex-col items-center space-y-6">
+        <!-- Profile Image Section -->
+        <div class="flex flex-col items-center space-y-4">
+            {% load static %}
+            <img src="{% static 'images/profile_placeholder.webp' %}" alt="Profile Picture"
+                class="w-32 h-32 rounded-full border-4 border-white shadow-md">
+            <button
+                class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                Change profile picture
+            </button>
+        </div>
+
+        <!-- Profile Details Section -->
+        <div class="w-full flex flex-col space-y-4">
+
+            <p><strong>Name:</strong> {{ user_data.name }}</p>
+            <p><strong>Username:</strong> {{ user_data.username }}</p>
+            <p><strong>Mobile Number:</strong> {{ user_data.mobile_no }}</p>
+            <p><strong>Email:</strong> {{ user_data.email }}</p>
+            <p><strong>Aadhar Number:</strong> {{ user_data.id }}</p>
+            <p><strong>Address:</strong> {{ user_data.address }}</p>
+        </div>
+
+        <!-- Edit Profile Button -->
+        <div class="w-full flex justify-center">
+            <button
+                class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.862 4.487a3.375 3.375 0 114.775 4.775L9.11 21.79a8.625 8.625 0 01-3.885 2.23l-3.29.914.915-3.29a8.625 8.625 0 012.23-3.885L16.862 4.487z" />
+                </svg>
+                Edit Profile
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
