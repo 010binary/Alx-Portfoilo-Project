@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Follow these easy steps{% endblock %}
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+{% block body %}
+<div class="min-h-screen bg-white flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full border border-gray-300 p-8">
+        <h1 class="text-4xl font-bold mb-8 relative">
+            Follow these easy steps
+            <span class="absolute bottom-0 left-0 w-1/3 h-1 bg-blue-500"></span>
+        </h1>
+        <ul class="space-y-6">
+            <li class="flex items-center">
+                <i class="fas fa-id-card text-3xl mr-4"></i>
+                <span class="text-xl">Register yourself by filling the required informations</span>
+            </li>
+            <li class="flex items-center">
+                <i class="fas fa-sign-in-alt text-3xl mr-4"></i>
+                <span class="text-xl">Signin as user</span>
+            </li>
+            <li class="flex items-center">
+                <i class="fas fa-th-large text-3xl mr-4"></i>
+                <span class="text-xl">Go to vote option on dashboard</span>
+            </li>
+            <li class="flex items-center">
+                <i class="fas fa-key text-3xl mr-4"></i>
+                <span class="text-xl">Give security key</span>
+            </li>
+            <li class="flex items-center">
+                <i class="fas fa-vote-yea text-3xl mr-4"></i>
+                <span class="text-xl">Vote your candidate and submit</span>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

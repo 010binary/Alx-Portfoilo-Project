@@ -14,6 +14,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, null=False,
                               blank=False, verbose_name=_('email'))
     password = models.CharField(max_length=500)
+    address = models.TextField(
+        null=True, blank=True, verbose_name=_('address'))
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

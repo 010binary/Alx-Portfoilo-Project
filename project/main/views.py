@@ -1,10 +1,11 @@
 from django.db import IntegrityError
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from .forms import RegisterForm, LoginForm
 from django.http import JsonResponse
 from .models import User
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -14,6 +15,10 @@ def index(request):
 
 def about(request):
     return render(request, 'about.html')
+
+
+def steps(request):
+    return render(request, 'steps.html')
 
 
 def register(request):
@@ -65,3 +70,16 @@ def login(request):
 def logout_view(request):
     logout(request)
     return JsonResponse({'status': 'success', 'message': 'Logout successful', 'redirect': reverse('login')})
+
+
+def vote_rules(request):
+    return render(request, 'vote_rules.html')
+
+def success_vote(request):
+    return render(request, 'success_vote.html')
+
+# @login_required
+def profile(request):
+    # user_data = User.objects.get(id=request.user.id)
+    # print(user_data)
+    return render(request, 'profile.html')

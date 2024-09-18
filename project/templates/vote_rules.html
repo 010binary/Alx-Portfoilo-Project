@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Voting Rules{% endblock %}
+{% block body %}
+<div class="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full">
+        <h1 class="text-2xl font-bold mb-4">Voting Guidelines for the Competition:</h1>
+        <div class="border border-white p-4 mb-4">
+            <p class="mb-4">You, as a registered user of the Voting System, are allowed to vote in the ongoing
+                competitions. Please take the following steps to ensure that your vote is valid. Make sure that your
+                vote is cast based on your own decision, without any undue influence. Once a vote is cast, it cannot be
+                reversed. If you face any issues, please contact the support team.</p>
+
+            <h2 class="text-xl font-semibold mb-2">Steps:</h2>
+            <ul class="list-disc pl-6 mb-4 space-y-1">
+                <li>Ensure you are the only one using your device while voting.</li>
+                <li>You can only cast one vote per competition.</li>
+                <li>IP address collection is enabled to prevent multiple votes from the same device.</li>
+                <li>Review the candidate names carefully before selecting your preferred choice.</li>
+                <li>After selecting your candidate, make sure to submit the vote.</li>
+                <li>Full result stats will be displayed after the competition period is completed.</li>
+                <li>You can verify your vote count in real-time during the competition.</li>
+            </ul>
+        </div>
+        <div class="flex items-center mb-4">
+            <input type="checkbox" id="understand" class="mr-2">
+            <label for="understand">I understand and will follow above steps.</label>
+        </div>
+        <div class="flex justify-end space-x-2">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded">Cancel</button>
+            <button class="bg-blue-600 text-white px-4 py-2 rounded">Proceed</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
