@@ -9,26 +9,21 @@
             {% load static %}
             <img src="{% static 'images/profile_placeholder.webp' %}" alt="Profile Picture"
                 class="w-32 h-32 rounded-full border-4 border-white shadow-md">
-            <button
-                class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                Change profile picture
-            </button>
         </div>
 
         <!-- Profile Details Section -->
         <div class="w-full flex flex-col space-y-4">
-
             <p><strong>Name:</strong> {{ user_data.name }}</p>
             <p><strong>Username:</strong> {{ user_data.username }}</p>
             <p><strong>Mobile Number:</strong> {{ user_data.mobile_no }}</p>
             <p><strong>Email:</strong> {{ user_data.email }}</p>
-            <p><strong>Aadhar Number:</strong> {{ user_data.id }}</p>
+            <p><strong>voteId Number:</strong> {{ user_data.voteId }}</p>
             <p><strong>Address:</strong> {{ user_data.address }}</p>
         </div>
 
         <!-- Edit Profile Button -->
         <div class="w-full flex justify-center">
-            <button
+            <button id="editProfileBtn"
                 class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-5 h-5 mr-2">
@@ -40,4 +35,71 @@
         </div>
     </div>
 </div>
+
+<!-- Modal for Editing Profile -->
+<div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white text-black p-8 rounded-lg max-w-xl w-full space-y-4">
+        <h2 class="text-xl font-semibold">Edit Profile</h2>
+        <form id="editProfileForm" method="POST" action="{% url 'update_profile' %}">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-semibold">Name</label>
+                    <input type="text" name="name" value="{{ user_data.name }}"
+                        class="w-full border border-gray-300 p-2 rounded">
+                </div>
+                <div>
+                    <label class="block font-semibold">Username</label>
+                    <input type="text" name="username" value="{{ user_data.username }}"
+                        class="w-full border border-gray-300 p-2 rounded">
+                </div>
+                <div>
+                    <label class="block font-semibold">Mobile Number</label>
+                    <input type="text" name="mobile_no" value="{{ user_data.mobile_no }}"
+                        class="w-full border border-gray-300 p-2 rounded">
+                </div>
+                <div>
+                    <label class="block font-semibold">Email</label>
+                    <input type="email" name="email" value="{{ user_data.email }}"
+                        class="w-full border border-gray-300 p-2 rounded">
+                </div>
+                <div>
+                    <label class="block font-semibold">Address</label>
+                    <input type="text" name="address" value="{{ user_data.address }}"
+                        class="w-full border border-gray-300 p-2 rounded">
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-4">
+                <button type="button" id="cancelEditBtn"
+                    class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-gray-400 focus:outline-none"
+                    style="background-color: red;">Cancel</button>
+                <button type="submit"
+                    class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-500 focus:outline-none">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Get modal and buttons
+    const editProfileModal = document.getElementById('editProfileModal');
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+    // Show modal when edit button is clicked
+    editProfileBtn.addEventListener('click', function () {
+        editProfileModal.classList.remove('hidden');
+    });
+
+    // Hide modal when cancel button is clicked
+    cancelEditBtn.addEventListener('click', function () {
+        editProfileModal.classList.add('hidden');
+    });
+
+    // Submit form and hide modal (submission is handled by Django view)
+    document.getElementById('editProfileForm').addEventListener('submit', function (event) {
+        editProfileModal.classList.add('hidden');  // You can remove this if you want to wait until the form submission is fully processed
+    });
+</script>
 {% endblock %}

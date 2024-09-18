@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, register, login, about, logout_view, profile, vote_rules, success_vote, steps
+from .views import index, register, login, about, logout_view, profile, vote_rules, success_vote, steps, update_profile
 
 urlpatterns = [
     path('', index, name='index'),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('steps/', steps, name='steps'),
     path('vote/', vote_rules, name='vote'),
     path('profile/', profile, name='profile'),
+    path('update_profile/', update_profile, name='update_profile'),
     path('successvote/', success_vote, name='successful vote'),
 ]

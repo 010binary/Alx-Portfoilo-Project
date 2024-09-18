@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from .forms import RegisterForm, LoginForm
@@ -84,3 +84,17 @@ def success_vote(request):
 def profile(request):
     user_data = User.objects.get(id=request.user.id)
     return render(request, 'profile.html', {'user_data': user_data})
+
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        user = request.user  # Assuming user is logged in
+        user.name = request.POST['name']
+        user.username = request.POST['username']
+        user.mobile_no = request.POST['mobile_no']
+        user.email = request.POST['email']
+        user.address = request.POST['address']
+        user.save()
+        return redirect('profile')
+    return render(request, 'profile.html')

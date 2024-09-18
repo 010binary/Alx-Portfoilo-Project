@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
@@ -16,6 +17,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=500)
     address = models.TextField(
         null=True, blank=True, verbose_name=_('address'))
+    voteId = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True, verbose_name=_('voteId'))
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
