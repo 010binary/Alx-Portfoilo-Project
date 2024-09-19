@@ -21,14 +21,36 @@
                 <li>You can verify your vote count in real-time during the competition.</li>
             </ul>
         </div>
-        <div class="flex items-center mb-4">
-            <input type="checkbox" id="understand" class="mr-2">
-            <label for="understand">I understand and will follow above steps.</label>
-        </div>
-        <div class="flex justify-end space-x-2">
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">Cancel</button>
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">Proceed</button>
-        </div>
+        <form>
+            <div class="flex items-center mb-4">
+                <input type="checkbox" id="understand" class="mr-2" required>
+                <label for="understand">I understand and will follow above steps.</label>
+            </div>
+            <div class="flex justify-end space-x-2">
+                <a class="bg-blue-600 text-white px-4 py-2 rounded" href="{%url 'index'%}">Cancel</a>
+                <!-- Keep the a tag, but add an ID for JavaScript to handle the redirect -->
+                <a id="proceed-btn" class="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">Proceed</a>
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    // Select the checkbox and the Proceed button
+    const checkbox = document.getElementById('understand');
+    const proceedBtn = document.getElementById('proceed-btn');
+
+    // Listen for the Proceed button click
+    proceedBtn.addEventListener('click', function (event) {
+        // Check if the checkbox is checked
+        if (!checkbox.checked) {
+            // If it's not checked, prevent the redirect
+            event.preventDefault();
+            alert("Please check the box to confirm you understand the guidelines.");
+        } else {
+            // If checked, redirect to the competition page
+            window.location.href = "{%url 'competition_view'%}";
+        }
+    });
+</script>
 {% endblock %}

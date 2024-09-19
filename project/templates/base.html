@@ -11,7 +11,7 @@
     <title>Vote system {% block title %}{% endblock %}</title>
 </head>
 
-<body class="bg-black">
+<body class="bg-gray-900">
     <main class="max-w-screen-4xl mx-auto">
 
         <nav class="bg-gray-900  p-6 text-white">
@@ -101,7 +101,6 @@
             document.addEventListener('click', function (event) {
                 if (!togglerButton.contains(event.target) && !mobileMenu.contains(event.target)) {
                     mobileMenu.classList.add('hidden');
-                    navBar.classList.remove('bg-gray-900'); // Revert to blue when closed
                 }
             });
         });

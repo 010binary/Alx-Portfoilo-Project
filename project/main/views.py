@@ -1,10 +1,10 @@
 from django.db import IntegrityError
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
 from .forms import RegisterForm, LoginForm, UpdateProfileForm
 from django.http import JsonResponse
-from .models import User
+from .models import User, Competition, Candidate, Vote
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -72,14 +72,6 @@ def logout_view(request):
     return redirect('index')
 
 
-def vote_rules(request):
-    return render(request, 'vote_rules.html')
-
-
-def success_vote(request):
-    return render(request, 'success_vote.html')
-
-
 @login_required
 def profile(request):
     user_data = request.user
@@ -132,4 +124,61 @@ def update_profile(request):
 
 
 @login_required
-def get_all_competition():
+def competition_view(request):
+    # Query active competitions
+    active_competitions = Competition.objects.filter(
+        status='Active').order_by('-start_date')
+
+    # Create lists for trending and other competitions
+    trending_competitions = []
+    other_competitions = []
+
+    # Loop through competitions and get vote count
+    for competition in active_competitions:
+        vote_count = Vote.objects.filter(competition=competition).count()
+        competition_data = {
+            'id': competition.id,
+            'name': competition.name,
+            'vote_count': vote_count,
+            'closing_date': competition.end_date.strftime('%d-%m-%Y')
+        }
+
+        # Add the first 2 competitions to trending
+        if len(trending_competitions) < 2:
+            trending_competitions.append(competition_data)
+        else:
+            other_competitions.append(competition_data)
+
+    context = {
+        'trending_competitions': trending_competitions,
+        'other_competitions': other_competitions
+    }
+
+    return render(request, 'competition.html', context)
+
+
+@login_required
+def competition_detail_view(request, id):
+    # Get the competition by ID
+    competition = get_object_or_404(Competition, id=id)
+
+    # Get all candidates for the competition
+    candidates = Candidate.objects.filter(
+        votes__competition=competition).distinct()
+
+    context = {
+        'competition': competition,
+        'candidates': candidates
+    }
+
+    return render(request, 'competition_detail.html', context)
+
+
+@login_required
+def vote_rules(request):
+    return render(request, 'vote_rules.html')
+
+
+@login_required
+def success_vote(request):
+    return render(request, 'success_vote.html')
