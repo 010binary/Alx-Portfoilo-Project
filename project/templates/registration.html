@@ -25,6 +25,9 @@
                     Register
                 </button>
             </div>
+            <p>
+                Already have an account? <a href="{% url 'login' %}" class="text-blue-400 hover:text-blue-500">Login</a>
+            </p>
         </form>
     </div>
 </div>
@@ -48,23 +51,23 @@
 
         const password = document.querySelector('input[name="password"]').value;
         const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
-        if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            document.getElementById('loader').classList.add('hidden'); // Hide the loader
-            return;
-        }
+        // if (password !== confirmPassword) {
+        //     alert("Passwords do not match!");
+        //     document.getElementById('loader').classList.add('hidden'); // Hide the loader
+        //     return;
+        // }
 
-        if (password.length < 8) {
-            alert("Password must be at least 8 characters long!");
-            document.getElementById('loader').classList.add('hidden'); // Hide the loader
-            return;
-        }
+        // if (password.length < 8) {
+        //     alert("Password must be at least 8 characters long!");
+        //     document.getElementById('loader').classList.add('hidden'); // Hide the loader
+        //     return;
+        // }
 
-        if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*]/.test(password)) {
-            alert("Password must contain at least one uppercase letter, one lowercase letter, one special character and one number!");
-            document.getElementById('loader').classList.add('hidden'); // Hide the loader
-            return;
-        }
+        // if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*]/.test(password)) {
+        //     alert("Password must contain at least one uppercase letter, one lowercase letter, one special character and one number!");
+        //     document.getElementById('loader').classList.add('hidden'); // Hide the loader
+        //     return;
+        // }
 
         if (isNaN(document.querySelector('input[name="mobile"]').value)) {
             alert("Mobile number must be a number!");

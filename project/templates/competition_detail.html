@@ -1,16 +1,73 @@
 {% extends 'base.html' %}
-{% block title %}competitions{% endblock %}
+{% block title %}Competitions{% endblock %}
 {% block body %}
-<div class="container mx-auto py-8">
-    <h2 class="text-xl font-semibold text-blue-400 mb-4">{{ competition.name }} Candidates</h2>
+<div class="container mx-auto py-8 px-6 space-x-4">
+    <div class="max-w-screen-2xl space-y-6">
 
-    <ul class="list-disc list-inside">
-        {% for candidate in candidates %}
-        <li class="text-white py-2">
-            {{ candidate.name }}
-        </li>
-        {% endfor %}
-    </ul>
+        <a href="javascript:history.back()"
+            class="px-6 py-2 rounded-lg text-white text-lg font-semibold mb-6 bg-blue-700 hover:bg-blue-700/50">&lt;
+            Back</a>
+
+        <h2 class="text-xl font-semibold text-blue-400 mb-4">{{ competition.name }} Voting Panel</h2>
+
+        <div class="space-y-4">
+            {% for candidate in candidates %}
+            <div class="bg-gray-500 rounded-lg p-4 space-y-2">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="bg-blue-600 rounded-full h-8 w-8 mr-4"></div>
+                        <h3 class="text-white text-lg font-semibold">{{ candidate.name }}</h3>
+                    </div>
+                    <button class="text-white" onclick="toggleDetails('details-{{ candidate.id }}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div id="details-{{ candidate.id }}" class="hidden">
+                    <p class="text-white">Name: {{ candidate.name }}</p>
+                    <p class="text-white">Detail: {{ candidate.description }}</p>
+                    <p class="text-white">Votes: {{ candidate.total_votes }}</p>
+                    <button class="mt-2 px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded-lg"
+                        onclick="submitVote('{{ competition.id }}', '{{ candidate.id }}')">
+                        Vote
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
 </div>
 
+<script>
+    function toggleDetails(id) {
+        const element = document.getElementById(id);
+        element.classList.toggle('hidden');
+    }
+
+    function submitVote(competitionId, candidateId) {
+        fetch(`/vote/${competitionId}/${candidateId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "Successfully voted") {
+                    window.location.href = "{% url 'success_vote' %}";
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
 {% endblock %}

@@ -2,10 +2,12 @@ from django.db import IntegrityError
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
+from django.contrib import messages
 from .forms import RegisterForm, LoginForm, UpdateProfileForm
 from django.http import JsonResponse
 from .models import User, Competition, Candidate, Vote
 from django.contrib.auth.decorators import login_required
+from .util import get_client_ip
 # Create your views here.
 
 
@@ -162,9 +164,8 @@ def competition_detail_view(request, id):
     # Get the competition by ID
     competition = get_object_or_404(Competition, id=id)
 
-    # Get all candidates for the competition
-    candidates = Candidate.objects.filter(
-        votes__competition=competition).distinct()
+    # Get all candidates for the competition along with their details
+    candidates = Candidate.objects.filter(competition=competition)
 
     context = {
         'competition': competition,
@@ -172,6 +173,40 @@ def competition_detail_view(request, id):
     }
 
     return render(request, 'competition_detail.html', context)
+
+
+@login_required
+def vote(request, competition_id, candidate_id):
+    # Get the competition and candidate by ID
+    competition = get_object_or_404(Competition, id=competition_id)
+    candidate = get_object_or_404(
+        Candidate, id=candidate_id, competition=competition)
+
+    # Get user IP address
+    user_ip = get_client_ip(request)
+
+    # Check if the user has already voted in the competition from this IP
+    if Vote.objects.filter(user=request.user, competition=competition).exists() or Vote.objects.filter(ip_address=user_ip, competition=competition).exists():
+        messages.error(
+            request, "This device has already voted in this competition.")
+        return JsonResponse({"message": "This device has already voted"}, status=400)
+
+    try:
+        # Record the vote
+        Vote.objects.create(
+            user=request.user,
+            competition=competition,
+            candidate=candidate,
+            ip_address=user_ip
+        )
+
+        # Increase the candidate's total votes
+        candidate.total_votes += 1
+        candidate.save()
+
+        return JsonResponse({"message": "Successfully voted"}, status=200)
+    except IntegrityError:
+        return JsonResponse({"message": "An error occurred. Try again."}, status=400)
 
 
 @login_required

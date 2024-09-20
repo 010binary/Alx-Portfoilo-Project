@@ -1,18 +1,20 @@
 from django.urls import path
-from .views import index, register, login, about, logout_view, profile, vote_rules, success_vote, steps, update_profile, competition_view, competition_detail_view
+from . import views
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('index/', index, name='index'),
-    path('register/', register, name='register'),
-    path('login/', login, name='login'),
-    path('about/', about, name='about'),
-    path('logout/', logout_view, name='logout'),
-    path('steps/', steps, name='steps'),
-    path('vote/', vote_rules, name='vote'),
-    path('profile/', profile, name='profile'),
-    path('update_profile/', update_profile, name='update_profile'),
-    path('successvote/', success_vote, name='successful vote'),
-    path('vote/competitions/', competition_view, name='competition_view'),
-    path('competition/<int:id>/', competition_detail_view, name='competition_detail'),
+    path('', views.index, name='index'),
+    path('index/', views.index, name='index'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login, name='login'),
+    path('about/', views.about, name='about'),
+    path('logout/', views.logout_view, name='logout'),
+    path('steps/', views.steps, name='steps'),
+    path('vote/', views.vote_rules, name='vote'),
+    path('profile/', views.profile, name='profile'),
+    path('update_profile/', views.update_profile, name='update_profile'),
+    path('successvote/', views.success_vote, name='success_vote'),
+    path('competitions/', views.competition_view, name='competition_view'),
+    path('competition/<int:id>/', views.competition_detail_view,
+         name='competition_detail'),
+    path('vote/<int:competition_id>/<int:candidate_id>/', views.vote, name='vote'),
 ]
