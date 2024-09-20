@@ -17,4 +17,8 @@ urlpatterns = [
     path('competition/<int:id>/', views.competition_detail_view,
          name='competition_detail'),
     path('vote/<int:competition_id>/<int:candidate_id>/', views.vote, name='vote'),
+    path('competitions/closed/', views.closed_competitions,
+         name='closed_competitions'),
+    path('competition/ranking/<int:competition_id>/',
+         views.competition_ranking, name='competition_ranking'),
 ]

@@ -1,0 +1,65 @@
+<!-- competition_ranking.html -->
+{% extends 'base.html' %}
+{% block title %}Competition Ranking{% endblock %}
+{% block body %}
+<div class="container mx-auto py-8 px-6 space-x-4">
+    <div class="max-w-screen-2xl space-y-6">
+
+        <a href="javascript:history.back()"
+            class="px-6 py-2 rounded-lg text-white text-lg font-semibold mb-6 bg-blue-700 hover:bg-blue-700/50">&lt;
+            Back</a>
+
+        <h2 class="text-xl font-semibold text-blue-400 mb-4">{{ competition.name }} - Results</h2>
+
+        <!-- Top 3 Participants -->
+        <div class="flex justify-between space-x-4 mb-8">
+            {% if top_3|length > 0 %}
+            <div class="flex-1 text-center bg-yellow-500 rounded-lg p-4">
+                <h3 class="text-white text-lg font-bold">🥇 {{ top_3.0.name }}</h3>
+                <p class="text-white">Votes: {{ top_3.0.total_votes }}</p>
+            </div>
+            {% endif %}
+            {% if top_3|length > 1 %}
+            <div class="flex-1 text-center bg-gray-400 rounded-lg p-4">
+                <h3 class="text-white text-lg font-bold">🥈 {{ top_3.1.name }}</h3>
+                <p class="text-white">Votes: {{ top_3.1.total_votes }}</p>
+            </div>
+            {% endif %}
+            {% if top_3|length > 2 %}
+            <div class="flex-1 text-center bg-brown-600 rounded-lg p-4">
+                <h3 class="text-white text-lg font-bold">🥉 {{ top_3.2.name }}</h3>
+                <p class="text-white">Votes: {{ top_3.2.total_votes }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Other Participants -->
+        <div class="bg-gray-500 rounded-lg p-4 space-y-2">
+            <h3 class="text-white text-lg font-bold">Other Participants</h3>
+            <table class="min-w-full table-auto text-white">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Rank</th>
+                        <th class="px-4 py-2">Name</th>
+                        <th class="px-4 py-2">Votes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for candidate in other_candidates %}
+                    <tr>
+                        <td class="border px-4 py-2">{{ forloop.counter|add:3 }}</td>
+                        <td class="border px-4 py-2">{{ candidate.name }}</td>
+                        <td class="border px-4 py-2">{{ candidate.total_votes }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center py-4">No other participants.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

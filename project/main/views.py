@@ -58,7 +58,7 @@ def login(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 auth_login(request, user)
-                print("User logged in", user)
+
                 return JsonResponse({'status': 'success', 'message': 'Login successful', 'redirect': reverse('index')})
             else:
                 return JsonResponse({'status': 'error', 'message': 'Invalid email or password'}, status=400)
@@ -217,3 +217,26 @@ def vote_rules(request):
 @login_required
 def success_vote(request):
     return render(request, 'success_vote.html')
+
+
+def closed_competitions(request):
+    competitions = Competition.objects.filter(status='Inactive')
+    return render(request, 'closed_competitions.html', {'competitions': competitions})
+
+
+def competition_ranking(request, competition_id):
+
+    competition = get_object_or_404(Competition, id=competition_id)
+
+    candidates = Candidate.objects.filter(
+        competition=competition).order_by('-total_votes')
+
+    top_3 = candidates[:3]
+
+    other_candidates = candidates[3:]
+
+    return render(request, 'competition_ranking.html', {
+        'competition': competition,
+        'top_3': top_3,
+        'other_candidates': other_candidates
+    })

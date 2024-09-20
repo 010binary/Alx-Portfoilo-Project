@@ -34,6 +34,7 @@
                 <!-- Desktop menu -->
                 <div class="hidden lg:flex lg:items-center text-xl lg:space-x-6" id="desktopMenu">
                     <a class="text-white hover:text-gray-300" href="{% url 'index' %}">Home</a>
+                    <a class="text-white hover:text-gray-300" href="{% url 'closed_competitions' %}">Result</a>
 
 
                     {% if request.user.is_authenticated %}
