@@ -39,6 +39,7 @@
 
                     {% if request.user.is_authenticated %}
                     <a class="text-white hover:text-gray-300" href="{% url 'profile' %}">Profile</a>
+                    <a class="text-white hover:text-gray-300" href="{% url 'competition_view' %}">competitions</a>
                     <a class="text-white hover:text-gray-300 bg-blue-700 rounded px-6 py-2"
                         href="{% url 'vote' %}">Vote</a>
                     <a class="text-white hover:text-gray-300" href="{% url 'logout' %}">Logout</a>
@@ -57,6 +58,8 @@
 
                         {% if request.user.is_authenticated %}
                         <a href="{% url 'profile' %}" class="block px-6 py-2 w-full hover:bg-blue-700">Profile</a>
+                        <a href="{% url 'competition_view' %}"
+                            class="block px-6 py-2 w-full hover:bg-blue-700">competitions</a>
                         <a href="{% url 'vote' %}" class="block px-6 py-2 w-full hover:bg-blue-700">Vote</a>
                         <a href="{% url 'logout' %}" class="block px-6 py-2 w-full hover:bg-blue-700">Logout</a>
                         {% else %}
