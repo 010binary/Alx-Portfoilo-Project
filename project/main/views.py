@@ -36,7 +36,7 @@ def register(request):
                     mobile_no=cleaned_data['mobile'],
                     password=cleaned_data['password']
                 )
-                print("user created", user)
+                user.save()
                 return JsonResponse({'status': 'success', 'message': 'Registration successful', 'redirect': reverse('index')})
             else:
                 return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
@@ -54,7 +54,6 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email'].lower()
-            print(email)
             password = form.cleaned_data['password']
             user = authenticate(email=email, password=password)
             if user is not None:
