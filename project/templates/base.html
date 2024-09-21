@@ -8,6 +8,22 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/output.css' %}" type="text/css">
     <link rel="shortcut icon" href="{% static 'images/LandingPageImg.webp' %}" type="image/x-icon">
+
+    <meta property="og:image" content="{% static 'images/LandingPageImg.webp' %}">
+    </meta>
+
+    <meta property="og:site_name" content="Vote system">
+    </meta>
+
+    <meta property="og:url" content="https://augustine1234.pythonanywhere.com/">
+    </meta>
+
+    <meta property="og:title" content="Vote system">
+    </meta>
+
+    <meta property="og:description" content="A Real-time voting system">
+    </meta>
+
     <title>Vote system {% block title %}{% endblock %}</title>
 </head>
 
