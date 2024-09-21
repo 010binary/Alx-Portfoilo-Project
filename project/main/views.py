@@ -53,7 +53,8 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
+            email = form.cleaned_data['email'].lower()
+            print(email)
             password = form.cleaned_data['password']
             user = authenticate(email=email, password=password)
             if user is not None:
