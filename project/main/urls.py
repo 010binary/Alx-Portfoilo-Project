@@ -21,4 +21,9 @@ urlpatterns = [
          name='closed_competitions'),
     path('competition/ranking/<int:competition_id>/',
          views.competition_ranking, name='competition_ranking'),
+    path('api/competitions/', views.get_competition_list, name='competition_list'),
+    path('api/competitions/ranking/<int:competition_id>/',
+         views.get_competition_ranking, name='competition_list'),
+    path('api/competitions/result/<int:competition_id>/',
+         views.get_competition_result, name='competition_list'),
 ]

@@ -240,3 +240,52 @@ def competition_ranking(request, competition_id):
         'top_3': top_3,
         'other_candidates': other_candidates
     })
+
+
+def get_competition_list(request):
+    competitions = Competition.objects.all()
+
+    data = []
+
+    for competition in competitions:
+        data.append({
+            'id': competition.id,
+            'name': competition.name,
+            'status': competition.status,
+            'start_date': competition.start_date.strftime('%d-%m-%Y'),
+            'end_date': competition.end_date.strftime('%d-%m-%Y')
+        })
+
+    return JsonResponse(data, safe=False)
+
+
+def get_competition_ranking(request, competition_id):
+    competition = get_object_or_404(Competition, id=competition_id)
+
+    candidates = Candidate.objects.filter(
+        competition=competition).order_by('-total_votes')
+
+    top_3 = candidates[:3]
+
+    other_candidates = candidates[3:]
+
+    return JsonResponse({
+        'competition': competition.name,
+        'top_3': [{'name': candidate.name, 'votes': candidate.total_votes} for candidate in top_3],
+        'other_candidates': [{'name': candidate.name, 'votes': candidate.total_votes} for candidate in other_candidates]
+    })
+
+
+def get_competition_result(request, competition_id):
+    competition = get_object_or_404(Competition, id=competition_id)
+
+    candidates = Candidate.objects.filter(
+        competition=competition).order_by('-total_votes')
+
+    top_candidate = candidates.first()
+
+    return JsonResponse({
+        'competition': competition.name,
+        'winner': top_candidate.name,
+        'votes': top_candidate.total_votes
+    })

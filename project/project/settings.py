@@ -72,28 +72,28 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 
 # Database
-""" 
-For development, use SQLite database
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-"""
+
+# For development, use SQLite database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('NAME'),
-        'USER': env('USER'),
-        'PASSWORD': env('PASSWORD'),
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# For live
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': env('NAME'),
+#         'USER': env('USER'),
+#         'PASSWORD': env('PASSWORD'),
+#         'HOST': env('HOST'),
+#         'PORT': env('PORT'),
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#         }
+#     }
+# }
 
 
 AUTH_USER_MODEL = 'main.User'
